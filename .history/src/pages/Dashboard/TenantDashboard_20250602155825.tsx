@@ -15,30 +15,13 @@ const TenantDashboard = () => {
 
   useEffect(() => {
     const fetchDashboard = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('Session expired. Please log in again.');
-        navigate('/login');
-        return;
-      }
       try {
         const res = await fetch(
-          `https://pms-bd.onrender.com/api/dashboard/tenant?lease_id=${lease_id}&amount=${amount}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }
+          `https://pms-bd.onrender.com/api/dashboard/tenant?lease_id=${lease_id}&amount=${amount}`
         );
-        if (res.status === 401) {
-          alert('Session expired. Please log in again.');
-          navigate('/login');
-          return;
-        }
         const data = await res.json();
         setDashboard(data);
-      } catch (err) {
+      } catch {
         setDashboard(null);
       } finally {
         setLoading(false);

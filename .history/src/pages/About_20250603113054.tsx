@@ -224,7 +224,7 @@ const About = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-blue hover:bg-white hover:text-green-600"
+              className="border-white text-white hover:bg-white hover:text-green-600"
               onClick={() => window.open('tel:+2348039093482', '_self')}
             >
               <Phone className="mr-2 w-5 h-5" />

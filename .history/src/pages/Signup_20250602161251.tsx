@@ -20,7 +20,6 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<string | boolean | number>(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showGoogleRoleModal, setShowGoogleRoleModal] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,12 +72,6 @@ const Signup = () => {
     alert(`${provider} signup will be implemented with backend integration`);
   };
 
-  const handleGoogleClick = () => setShowGoogleRoleModal(true);
-  const handleGoogleRoleSelect = (role: string) => {
-    setShowGoogleRoleModal(false);
-    window.location.href = `https://pms-bd.onrender.com/api/auth/google?role=${role}`;
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-orange-50 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full">
@@ -109,7 +102,7 @@ const Signup = () => {
               <Button 
                 variant="outline" 
                 className="w-full h-12 border-gray-200 hover:bg-gray-50"
-                onClick={handleGoogleClick}
+                onClick={() => handleSocialSignup('Google')}
               >
                 <span className="mr-2">🔍</span>
                 Continue with Google
@@ -131,16 +124,6 @@ const Signup = () => {
                 Continue with X (Twitter)
               </Button>
             </div>
-
-            {showGoogleRoleModal && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div className="bg-white p-8 rounded shadow-lg text-center">
-                  <h2 className="mb-4 text-lg font-bold">Select your role</h2>
-                  <Button className="mr-4" onClick={() => handleGoogleRoleSelect('landlord')}>Landlord</Button>
-                  <Button onClick={() => handleGoogleRoleSelect('tenant')}>Tenant</Button>
-                </div>
-              </div>
-            )}
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">

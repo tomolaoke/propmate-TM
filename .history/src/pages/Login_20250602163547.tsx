@@ -13,7 +13,6 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showGoogleRoleModal, setShowGoogleRoleModal] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,20 +24,17 @@ const Login = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
-      if (response.ok && data.token && data.user) {
+      if (response.ok) {
+        const data = await response.json();
+        // Save token and userType
         localStorage.setItem('token', data.token);
-        localStorage.setItem('userType', data.user.role);
+        localStorage.setItem('userType', data.userType);
         localStorage.setItem('isLoggedIn', 'true');
-        if (data.user.role === 'landlord') {
-          navigate('/dashboard/landlord');
-        } else if (data.user.role === 'tenant') {
-          navigate('/dashboard/tenant');
-        } else {
-          navigate('/');
-        }
+        // Redirect based on userType
+        navigate(data.userType === 'landlord' ? '/dashboard/landlord' : '/dashboard/tenant');
       } else {
-        alert(data.message || 'Login failed.');
+        const errorData = await response.json();
+        alert(errorData.message || 'Login failed.');
       }
     } catch (error) {
       alert('An error occurred. Please try again.');
@@ -58,12 +54,6 @@ const Login = () => {
     console.log(`Login with ${provider}`);
     // In real app, this would integrate with social auth providers
     alert(`${provider} login will be implemented with backend integration`);
-  };
-
-  const handleGoogleClick = () => setShowGoogleRoleModal(true);
-  const handleGoogleRoleSelect = (role: string) => {
-    setShowGoogleRoleModal(false);
-    window.location.href = `https://pms-bd.onrender.com/api/auth/google?role=${role}`;
   };
 
   return (
@@ -96,7 +86,7 @@ const Login = () => {
               <Button 
                 variant="outline" 
                 className="w-full h-12 border-gray-200 hover:bg-gray-50"
-                onClick={handleGoogleClick}
+                onClick={() => handleSocialLogin('Google')}
               >
                 <span className="mr-2">🔍</span>
                 Continue with Google
@@ -197,16 +187,6 @@ const Login = () => {
             </div>
           </CardContent>
         </Card>
-
-        {showGoogleRoleModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-8 rounded shadow-lg text-center">
-              <h2 className="mb-4 text-lg font-bold">Select your role</h2>
-              <Button className="mr-4" onClick={() => handleGoogleRoleSelect('landlord')}>Landlord</Button>
-              <Button onClick={() => handleGoogleRoleSelect('tenant')}>Tenant</Button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

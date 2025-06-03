@@ -214,7 +214,7 @@ const Services = () => {
             <Button size="lg" className="bg-white text-green-600 hover:bg-gray-50" onClick={handleStartFreeTrial}>
               Start Free Trial
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-blue hover:bg-white hover:text-green-600">
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
               Schedule Demo
             </Button>
           </div>

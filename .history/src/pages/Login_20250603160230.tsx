@@ -25,20 +25,17 @@ const Login = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
-      if (response.ok && data.token && data.user) {
+      if (response.ok) {
+        const data = await response.json();
+        // Save token and userType
         localStorage.setItem('token', data.token);
-        localStorage.setItem('userType', data.user.role);
+        localStorage.setItem('userType', data.userType);
         localStorage.setItem('isLoggedIn', 'true');
-        if (data.user.role === 'landlord') {
-          navigate('/dashboard/landlord');
-        } else if (data.user.role === 'tenant') {
-          navigate('/dashboard/tenant');
-        } else {
-          navigate('/');
-        }
+        // Redirect based on userType
+        navigate(data.userType === 'landlord' ? '/dashboard/landlord' : '/dashboard/tenant');
       } else {
-        alert(data.message || 'Login failed.');
+        const errorData = await response.json();
+        alert(errorData.message || 'Login failed.');
       }
     } catch (error) {
       alert('An error occurred. Please try again.');

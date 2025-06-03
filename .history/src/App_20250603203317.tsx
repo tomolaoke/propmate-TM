@@ -20,7 +20,6 @@ import VerifyEmail from "./pages/VerifyEmail";
 import AuthCallback from "./pages/AuthCallback";
 import PrivateRoute from "./components/PrivateRoute";
 import { checkAndHandleTokenExpiration } from "./utils/auth";
-import GoogleOAuthBridge from "./pages/GoogleOAuthBridge";
 
 const queryClient = new QueryClient();
 
@@ -49,7 +48,6 @@ const AppRoutes = () => {
       <Route path="/faq" element={<FAQ />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
-      <Route path="/auth/google-bridge" element={<GoogleOAuthBridge />} />
 
       {/* Protected Routes */}
       <Route element={<PrivateRoute />}>
