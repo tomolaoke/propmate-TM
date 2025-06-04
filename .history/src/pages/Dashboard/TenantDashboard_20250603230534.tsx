@@ -70,9 +70,9 @@ const TenantDashboard = () => {
         if (!res.ok) throw new Error('Failed to fetch dashboard data.');
         const data: TenantDashboardResponse = await res.json();
         setDashboard(data);
-      } catch (err: unknown) {
+      } catch (err: any) {
         setDashboard(null);
-        setError(err instanceof Error ? err.message : 'Failed to load dashboard data.');
+        setError(err.message || 'Failed to load dashboard data.');
       } finally {
         setLoading(false);
       }

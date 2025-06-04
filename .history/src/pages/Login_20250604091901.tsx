@@ -26,14 +26,13 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-
       if (response.ok && data.token && data.user) {
         localStorage.setItem('token', data.token);
-
-        const userRole = data.user?.role;
-        if (userRole === 'landlord') {
+        localStorage.setItem('userType', data.user.role);
+        localStorage.setItem('isLoggedIn', 'true');
+        if (data.user.role === 'landlord') {
           navigate('/dashboard/landlord');
-        } else if (userRole === 'tenant') {
+        } else if (data.user.role === 'tenant') {
           navigate('/dashboard/tenant');
         } else {
           navigate('/');
@@ -57,6 +56,7 @@ const Login = () => {
 
   const handleSocialLogin = (provider: string) => {
     console.log(`Login with ${provider}`);
+    // In real app, this would integrate with social auth providers
     alert(`${provider} login will be implemented with backend integration`);
   };
 
@@ -91,6 +91,7 @@ const Login = () => {
             <CardDescription>Choose your preferred login method</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            {/* Social Login Buttons */}
             <div className="space-y-3">
               <Button 
                 variant="outline" 
@@ -127,6 +128,7 @@ const Login = () => {
               </div>
             </div>
 
+            {/* Email Login Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
